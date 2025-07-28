@@ -8,6 +8,12 @@ import (
 	"github.com/williamsbgomes/admin-catalogo-video-go/internal/entity/category"
 )
 
+const (
+	nameEmptyErrorMessage    = "'name' should not be empty"
+	nameLengthErrorMessage   = "'name' must be between 3 and 255 characters"
+	validCategoryDescription = "A categoria mais assistida"
+)
+
 func TestGivenAnEmptyID_WhenCreateANewCategory_ThenShouldReceiveAnError(t *testing.T) {
 	categoryEntity := category.Category{ID: ""}
 	err := categoryEntity.IsValid()
@@ -19,14 +25,14 @@ func TestGivenAnEmptyName_WhenCreateANewCategory_ThenShouldReceiveAnError(t *tes
 	categoryEntity := category.Category{ID: "1234", Name: ""}
 	err := categoryEntity.IsValid()
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "'name' should not be empty")
+	assert.Contains(t, err.Error(), nameEmptyErrorMessage)
 }
 
 func TestGivenAnInvalidNameLengthLessThan3_WhenCreateANewCategory_ThenShouldReceiveAnError(t *testing.T) {
 	categoryEntity := category.Category{ID: "1234", Name: "ab"}
 	err := categoryEntity.IsValid()
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "'name' must be between 3 and 255 characters")
+	assert.Contains(t, err.Error(), nameLengthErrorMessage)
 }
 
 func TestGivenAnInvalidNameLengthMoreThan255_WhenCreateANewCategory_ThenShouldReceiveAnError(t *testing.T) {
@@ -36,12 +42,12 @@ func TestGivenAnInvalidNameLengthMoreThan255_WhenCreateANewCategory_ThenShouldRe
 	}
 	err := categoryEntity.IsValid()
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "'name' must be between 3 and 255 characters")
+	assert.Contains(t, err.Error(), nameLengthErrorMessage)
 }
 
 func TestGivenAValidParams_WhenCallNewCategory_ThenInstantiateACategory(t *testing.T) {
 	expectedName := "Filmes"
-	expectedDescription := "A categoria mais assistida"
+	expectedDescription := validCategoryDescription
 	expectedActive := true
 
 	categoryEntity, err := category.NewCategory(
@@ -63,10 +69,10 @@ func TestGivenAValidParams_WhenCallNewCategory_ThenInstantiateACategory(t *testi
 
 func TestGivenAnInvalidEmptyName_WhenCallNewCategory_ThenShouldReceiveAnError(t *testing.T) {
 	expectedName := ""
-	expectedDescription := "A categoria mais assistida"
+	expectedDescription := validCategoryDescription
 	expectedActive := true
 
-	expectedErrorMessage := "'name' should not be empty"
+	expectedErrorMessage := nameEmptyErrorMessage
 
 	_, err := category.NewCategory(
 		expectedName,
@@ -79,10 +85,10 @@ func TestGivenAnInvalidEmptyName_WhenCallNewCategory_ThenShouldReceiveAnError(t 
 
 func TestGivenAnInvalidNameLengthLessThan3_WhenCallNewCategory_ThenShouldReceiveAnError(t *testing.T) {
 	expectedName := "ab"
-	expectedDescription := "A categoria mais assistida"
+	expectedDescription := validCategoryDescription
 	expectedActive := true
 
-	expectedErrorMessage := "'name' must be between 3 and 255 characters"
+	expectedErrorMessage := nameLengthErrorMessage
 
 	_, err := category.NewCategory(
 		expectedName,
@@ -95,10 +101,10 @@ func TestGivenAnInvalidNameLengthLessThan3_WhenCallNewCategory_ThenShouldReceive
 
 func TestGivenAnInvalidNameLengthMoreThan255_WhenCallNewCategory_ThenShouldReceiveAnError(t *testing.T) {
 	expectedName := strings.Repeat("a", 256)
-	expectedDescription := "A categoria mais assistida"
+	expectedDescription := validCategoryDescription
 	expectedActive := true
 
-	expectedErrorMessage := "'name' must be between 3 and 255 characters"
+	expectedErrorMessage := nameLengthErrorMessage
 
 	_, err := category.NewCategory(
 		expectedName,
@@ -133,7 +139,7 @@ func TestGivenAValidEmptyDescription_WhenCallNewCategoryAndValidate_ThenShouldRe
 
 func TestGivenAValidFalseIsActive_WhenCallNewCategoryAndValidate_ThenShouldReceiveOK(t *testing.T) {
 	expectedName := "Filmes"
-	expectedDescription := "A categoria mais assistida"
+	expectedDescription := validCategoryDescription
 	expectedActive := false
 
 	categoryEntity, err := category.NewCategory(
@@ -155,7 +161,7 @@ func TestGivenAValidFalseIsActive_WhenCallNewCategoryAndValidate_ThenShouldRecei
 
 func TestGivenAValidActiveCategory_whenCallDeactivate_thenReturnCategoryInactivated(t *testing.T) {
 	expectedName := "Filmes"
-	expectedDescription := "A categoria mais assistida"
+	expectedDescription := validCategoryDescription
 	expectedActive := true
 
 	categoryEntity, err := category.NewCategory(
@@ -187,7 +193,7 @@ func TestGivenAValidActiveCategory_whenCallDeactivate_thenReturnCategoryInactiva
 
 func TestGivenAValidInactiveCategory_whenCallActivate_thenReturnCategoryActivated(t *testing.T) {
 	expectedName := "Filmes"
-	expectedDescription := "A categoria mais assistida"
+	expectedDescription := validCategoryDescription
 	expectedActive := false
 
 	categoryEntity, err := category.NewCategory(
@@ -219,7 +225,7 @@ func TestGivenAValidInactiveCategory_whenCallActivate_thenReturnCategoryActivate
 
 func TestGivenAValidCategory_WhenCallUpdate_ThenReturnUpdatedCategory(t *testing.T) {
 	expectedName := "Filmes"
-	expectedDescription := "A categoria mais assistida"
+	expectedDescription := validCategoryDescription
 	expectedActive := true
 
 	expectedUpdatedName := "Filmes Atualizados"
@@ -254,7 +260,7 @@ func TestGivenAValidCategory_WhenCallUpdate_ThenReturnUpdatedCategory(t *testing
 
 func TestGivenAValidCategory_WhenCallUpdateToInactive_ThenReturnUpdatedCategory(t *testing.T) {
 	expectedName := "Filmes"
-	expectedDescription := "A categoria mais assistida"
+	expectedDescription := validCategoryDescription
 	expectedActive := false
 
 	expectedUpdatedName := "Filmes Atualizados"
@@ -304,15 +310,15 @@ func TestGivenAValidCategory_WhenCallUpdateWithInvalidParams_ThenShouldReceiveAn
 
 	err = categoryEntity.Update("", expectedDescription, expectedActive)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "'name' should not be empty")
+	assert.Contains(t, err.Error(), nameEmptyErrorMessage)
 
 	err = categoryEntity.Update("ab", "", expectedActive)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "'name' must be between 3 and 255 characters")
+	assert.Contains(t, err.Error(), nameLengthErrorMessage)
 
 	err = categoryEntity.Update(strings.Repeat("a", 256), "", expectedActive)
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "'name' must be between 3 and 255 characters")
+	assert.Contains(t, err.Error(), nameLengthErrorMessage)
 
 	err = categoryEntity.Update(expectedName, expectedDescription, true)
 	assert.NoError(t, err)
