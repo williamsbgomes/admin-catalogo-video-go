@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/williamsbgomes/admin-catalogo-video-go/internal/entity/category"
+	"github.com/williamsbgomes/admin-catalogo-video-go/internal/domain/category"
 )
 
 func main() {

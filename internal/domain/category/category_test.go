@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/williamsbgomes/admin-catalogo-video-go/internal/entity/category"
+	"github.com/williamsbgomes/admin-catalogo-video-go/internal/domain/category"
 )
 
 const (
@@ -295,7 +295,7 @@ func TestGivenAValidCategory_WhenCallUpdateToInactive_ThenReturnUpdatedCategory(
 
 func TestGivenAValidCategory_WhenCallUpdateWithInvalidParams_ThenShouldReceiveAnError(t *testing.T) {
 	expectedName := "Filmes"
-	expectedDescription := "A categoria mais assistida"
+	expectedDescription := validCategoryDescription
 	expectedActive := true
 
 	categoryEntity, err := category.NewCategory(

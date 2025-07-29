@@ -8,6 +8,14 @@ import (
 	timeutils "github.com/williamsbgomes/admin-catalogo-video-go/pkg/time-utils"
 )
 
+type CategoryError struct {
+	msg string
+}
+
+func (c CategoryError) Error() string {
+	return c.msg
+}
+
 type Category struct {
 	ID          string
 	Name        string
