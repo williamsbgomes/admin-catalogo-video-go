@@ -9,9 +9,8 @@ import (
 )
 
 const (
-	nameEmptyErrorMessage    = "'name' should not be empty"
-	nameLengthErrorMessage   = "'name' must be between 3 and 255 characters"
-	validCategoryDescription = "A categoria mais assistida"
+	nameEmptyErrorMessage  = "'name' should not be empty"
+	nameLengthErrorMessage = "'name' must be between 3 and 255 characters"
 )
 
 func TestGivenAnEmptyID_WhenCreateANewCastMember_ThenShouldReceiveAnError(t *testing.T) {
